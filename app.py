@@ -1,7 +1,5 @@
 import streamlit as st
 from PIL import Image
-from io import BytesIO
-import requests
 
 import plotly.express as px
 import pandas as pd
@@ -14,8 +12,7 @@ from katonic.fs import FeatureStore
 
 import pickle
 
-response = requests.get(url='https://katonic.ai/favicon.ico')
-im = Image.open(BytesIO(response.content))
+im = Image.open("./favicon.ico")
 st.set_page_config(page_title='Bank Loan Default Prediction',
                    page_icon=im,
                    layout='wide',
