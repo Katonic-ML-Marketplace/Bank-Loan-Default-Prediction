@@ -1,27 +1,22 @@
 import streamlit as st
 from PIL import Image
-from io import BytesIO
-import requests
-
-import plotly.express as px
 import pandas as pd
-import matplotlib.pyplot as plt 
-import seaborn as sns
 
-import katonic
 from katonic.ml.client import MLClient
-from katonic.fs import FeatureStore
-
+from katonic.fs.feature_store import FeatureStore
 import pickle
 
-response = requests.get(url='https://katonic.ai/favicon.ico')
-im = Image.open(BytesIO(response.content))
+import warnings
+warnings.filterwarnings('ignore')
+
+im = Image.open('img_src/favicon.ico')
 st.set_page_config(page_title='Bank Loan Default Prediction',
                    page_icon=im,
                    layout='wide',
                    initial_sidebar_state='auto')
+
 st.set_option('deprecation.showPyplotGlobalUse', False)
-st.sidebar.image('Logo.png')
+st.sidebar.image('img_src/Logo.png')
 st.sidebar.title('Bank Loan Default Prediction')
 st.sidebar.write('---')
 st.sidebar.subheader("Inference")
@@ -55,7 +50,7 @@ if infer_type == "By Customer-Id":
             features=cols,
         ).to_df()       
 
-        model = pickle.load(open("best-model.pkl", "rb"))
+        model = pickle.load(open("models/best_model.pkl", "rb"))
 
         output = model.predict(test.drop("id", axis=1))
 
@@ -102,7 +97,7 @@ else:
     
         final_data = pd.DataFrame(dict(zip(columns, data)), index = [0])
     
-        encoder = pickle.load(open("one-hot-encoder.pkl", "rb"))
+        encoder = pickle.load(open("models/one_hot_encoder.pkl", "rb"))
 
         obj_cols = ['grade', 'home_ownership', 'purpose', 'term']
     
@@ -112,7 +107,7 @@ else:
 
         clean_data = enc_df.drop(obj_cols, axis = 1)
 
-        model = pickle.load(open("best-model.pkl", "rb"))
+        model = pickle.load(open("models/best_model.pkl", "rb"))
 
         output = model.predict(clean_data)
 
@@ -129,4 +124,4 @@ st.write('''Bank loan default is a classic use case where ML models can be deplo
 Loans are risky but at the same time it is also a product that generates profits for the institution through differential borrowing/ lending rates.
 
 The ML model should be explainable and be able to balance between risk and profits.''')
-st.image("loan-predict-src.png", use_column_width=True)
+st.image("img_src/loan_predict_src.png", use_column_width=True)
