@@ -6,7 +6,7 @@ Loans are risky but at the same time it is also a product that generates profits
 
 The ML model should be explainable and be able to balance between risk and profits.
 
-![bank-loan-default-prediction](loan_predict_src.png)
+![bank-loan-default-prediction](img_src/loan_predict_src.png)
 
 # How to run the Pipeline Notebook.
 
