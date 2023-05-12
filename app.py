@@ -9,6 +9,7 @@ import pickle
 import warnings
 warnings.filterwarnings('ignore')
 
+#xommwt
 im = Image.open('img_src/favicon.ico')
 st.set_page_config(page_title='Bank Loan Default Prediction',
                    page_icon=im,
