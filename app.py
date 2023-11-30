@@ -61,7 +61,7 @@ if infer_type == "By Customer-Id":
             features=cols,
         ).to_df()       
 
-        model = pickle.load(open("models/model.pkl", "rb"))
+        model = pickle.load(open("models/best_model.pkl", "rb"))
 
         output = model.predict(test.drop("id", axis=1))
 
@@ -118,7 +118,7 @@ else:
 
         clean_data = enc_df.drop(obj_cols, axis = 1)
 
-        model = pickle.load(open("models/model.pkl", "rb"))
+        model = pickle.load(open("models/best_model.pkl", "rb"))
 
         output = model.predict(clean_data)
 
