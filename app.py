@@ -9,7 +9,6 @@ import pickle
 import warnings
 warnings.filterwarnings('ignore')
 
-#xommwt
 im = Image.open('img_src/favicon.ico')
 st.set_page_config(page_title='Bank Loan Default Prediction',
                    page_icon=im,
@@ -17,11 +16,22 @@ st.set_page_config(page_title='Bank Loan Default Prediction',
                    initial_sidebar_state='auto')
 
 st.set_option('deprecation.showPyplotGlobalUse', False)
+
+st.title("Bank Loan Default Prediction.")
+st.write('''Bank loan default is a classic use case where ML models can be deployed to predict risky customers and hence minimize losses of the lenders. Financial industry is highly regulated, thus any model deployed or classification of customers basis their behavior, demographics etc. is highly regulated and must be explained to authorities to ensure unbiased operations.
+
+Loans are risky but at the same time it is also a product that generates profits for the institution through differential borrowing/ lending rates.
+
+The ML model should be explainable and be able to balance between risk and profits.''')
+st.image("img_src/loan_predict_src.png", use_column_width=True)
+
 st.sidebar.image('img_src/Logo.png')
 st.sidebar.title('Bank Loan Default Prediction')
 st.sidebar.write('---')
 st.sidebar.subheader("Inference")
-infer_type = st.sidebar.radio("Select Inference type?",("By Customer-Id","By Customer data"))
+st.sidebar.write("Inference type: **By Customer data**")
+# infer_type = st.sidebar.radio("Select Inference type?",("By Customer-Id","By Customer data"))
+infer_type = "By Customer data"
 
 if infer_type == "By Customer-Id":
     customer_id = st.sidebar.text_input("Enter the customer id?")
@@ -51,14 +61,14 @@ if infer_type == "By Customer-Id":
             features=cols,
         ).to_df()       
 
-        model = pickle.load(open("models/best_model.pkl", "rb"))
+        model = pickle.load(open("models/model.pkl", "rb"))
 
         output = model.predict(test.drop("id", axis=1))
 
         if output[0] == 1:
-            st.sidebar.write("The applicant may found out as DEFAULT.")
+            st.warning("The applicant may found out as DEFAULT.")
         else:
-            st.sidebar.write("The Applicant is GENUINE, We can Approve the Loan.")
+            st.success("The Applicant is GENUINE, We can Approve the Loan.")
     
 else:
     annual_income = st.sidebar.text_input("Enter your annual income")
@@ -108,21 +118,13 @@ else:
 
         clean_data = enc_df.drop(obj_cols, axis = 1)
 
-        model = pickle.load(open("models/best_model.pkl", "rb"))
+        model = pickle.load(open("models/model.pkl", "rb"))
 
         output = model.predict(clean_data)
 
         st.sidebar.subheader("Predict")
 
         if output[0] == 1:
-            st.sidebar.write("The applicant may found out as DEFAULT.")
+            st.warning("The applicant may found out as DEFAULT.")
         else:
-            st.sidebar.write("The Applicant is GENUINE, We can Approve the Loan.")
-
-st.title("Bank Loan Default Prediction.")
-st.write('''Bank loan default is a classic use case where ML models can be deployed to predict risky customers and hence minimize losses of the lenders. Financial industry is highly regulated, thus any model deployed or classification of customers basis their behavior, demographics etc. is highly regulated and must be explained to authorities to ensure unbiased operations.
-
-Loans are risky but at the same time it is also a product that generates profits for the institution through differential borrowing/ lending rates.
-
-The ML model should be explainable and be able to balance between risk and profits.''')
-st.image("img_src/loan_predict_src.png", use_column_width=True)
+            st.success("The Applicant is GENUINE, We can Approve the Loan.")
